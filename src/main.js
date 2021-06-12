@@ -1,8 +1,15 @@
+'use strict';
 import Vue from 'vue'
 import App from './App.vue'
-
-Vue.config.productionTip = false
-
+import VueRouter from 'vue-router';
+import {router} from './router.js';
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+Vue.config.productionTip = false;
+Vue.use(VueRouter);
+Vue.use(Vuetify);
 new Vue({
+  router,
+  vuetify : new Vuetify(),
   render: h => h(App),
 }).$mount('#app')
