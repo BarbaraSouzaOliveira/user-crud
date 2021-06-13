@@ -1,46 +1,34 @@
 <template>
- <div class="conteiner-home">    
-    <v-hover>
-      <template v-slot:default="{ hover }">
-        <v-card
-          :elevation="hover ? 24 : 6"
-          class="card-home"
-        >
-          <div></div>
-          Criar Usuarios
-        </v-card>
-      </template>
-    </v-hover> 
-    <v-hover>
-      <template v-slot:default="{ hover }">
-        <v-card
-          :elevation="hover ? 24 : 6"
-          class="card-home"
-        >
-          <div></div>
-          Listar Usuarios
-        </v-card>
-      </template>
-    </v-hover>   
-  </div>
+    <div>
+        <Navbar name="CRUD de USUARIOS" />
+        <div class="conteiner-home">  
+            <CardNavigation 
+                name="Criar Usuarios"
+                route="/criar"
+                imgName="IconCreate.png"                
+            />
+            <CardNavigation 
+                name="Listar Usuarios"
+                route="/criar"
+                imgName="IconList.png"                
+            />           
+        </div>
+    </div>
 </template>
 
 <script>
-
+import Navbar from '../components/Navbar.vue'
+import CardNavigation from '../components/CardNavigation.vue'
 export default {
   name: 'Home',
+  components: {
+      Navbar,
+      CardNavigation
+  }
 }
 </script>
 
 <style>
-.card-home {
-    width: 100px;
-    height: 150px;
-    margin: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
 .conteiner-home {
  display: flex;
  justify-content: center;
