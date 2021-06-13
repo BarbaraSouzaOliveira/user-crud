@@ -1,27 +1,36 @@
 <template>
-  <div style="width: 80vw; padding: 2rem">
-    <v-carousel 
+  <div>
+    <Navbar name="Criar Usuarios"/>
+     <v-alert
+            elevation="8"
+            outlined
+            text
+            type="success"
+            v-if="sucess"
+        >Usuario Criado com Sucesso</v-alert>
+    <div style="width: 80vw; padding: 2rem">
+      <span>Selecione um avatar</span>
+      <v-carousel 
         style="height: 180px;" 
-         hide-delimiters
-    >    
+        hide-delimiters
+      >    
         <v-carousel-item
-            v-for="i in 3" :key="i"     
+          v-for="i in 3" :key="i"     
         >
-        <v-layout row style="padding: 2rem;justify-content: space-around;" >
+          <v-layout row style="padding: 2rem;justify-content: space-around;" >
             <v-flex xs2  :key="j" v-for="j in 5">
-            <img
+              <img
                 :src="getImgUrl(i, j)" 
                 v-bind:alt="j" 
                 class="create-img"
                 :style="[avatar === j+'-'+i ? {'background': '#FF9D00'} : {'background': 'white'}]"
                 v-on:click="onClickImg(i, j)"
-                />
+              />
             </v-flex>
-        </v-layout>    
+          </v-layout>    
         </v-carousel-item>
-    </v-carousel>
-    <template>
-  <v-form
+      </v-carousel>
+      <v-form
     ref="form"
     v-model="valid"
     lazy-validation
@@ -41,57 +50,52 @@
       required
     ></v-text-field>
 
-    <v-select
-      v-model="select"
-      :items="items"
-      :rules="[v => !!v || 'Item is required']"
-      label="Item"
-      required
-    ></v-select>
-
-    <v-checkbox
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
-      required
-    ></v-checkbox>
-
+    
     <v-btn
       :disabled="!valid"
       color="success"
       class="mr-4"
       @click="validate"
     >
-      Validate
-    </v-btn>
-
-    <v-btn
-      color="error"
-      class="mr-4"
-      @click="reset"
-    >
-      Reset Form
-    </v-btn>
-
-    <v-btn
-      color="warning"
-      @click="resetValidation"
-    >
-      Reset Validation
-    </v-btn>
-  </v-form>
-</template>
-    
+      Criar
+    </v-btn>    
+  </v-form>      
+    </div>    
+    <v-alert
+      color="red"
+      elevation="8"
+      outlined
+      text
+      type="error"
+      v-if="fail"
+    >Algo deu errado! {{failMensage}}</v-alert>
   </div>
 </template>
 
 <script>
-
+import Navbar from '../components/Navbar.vue'
 export default {
   name: 'Create',
+  components: {
+    Navbar,
+  },
   data(){
-      return{
-          avatar: 0
+      return {
+        avatar: 0,
+        valid: true,
+        name: '',
+        nameRules: [
+          v => !!v || 'Nome e obrigatorio',
+          v => (v && v.length <= 30) || 'Nome precisa ter menos que 30 caracters',
+        ],
+        email: '',
+        emailRules: [
+          v => !!v || 'E-mail e obrigatorio',
+          v => /.+@.+\..+/.test(v) || 'E-mail precisa ser valido',
+        ],
+        fail: false,
+        failMensage: '',
+        sucess: false,
       }
   },
   methods: {
@@ -101,6 +105,32 @@ export default {
     onClickImg (i,j){
         console.log("pao",i,j)
         this.avatar = j+'-'+i;
+    },
+    toggleFail(){
+      this.fail = !this.fail;
+    },
+    validate () {
+      if(this.$refs.form.validate() && this.avatar !== 0){
+       
+        let users = this.$store.getters.getUser
+        if(users.findIndex(e=> e.email === this.email)!== -1){
+          this.fail = true;
+          this.failMensage = 'Email ja cadastrado'
+          setTimeout(this.toggleFail,2000);
+        }else{
+           this.sucess = true;
+          this.$store.commit('addUsers', {
+            name: this.name,
+            avatar: this.avatar,
+            email: this.email,
+          })
+          setTimeout(()=>this.$router.push({ path: '/'}),2000)
+        }        
+      }else{
+        this.fail = true;
+        this.failMensage = 'Verifique se preencheu todos os campos'
+        setTimeout(this.toggleFail,2000);
+      }
     },
   },
 };

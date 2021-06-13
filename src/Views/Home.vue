@@ -12,7 +12,7 @@
                 route="/criar"
                 imgName="IconList.png"                
             />           
-        </div>
+        </div>       
     </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
   components: {
       Navbar,
       CardNavigation
-  }
+  },
 }
 </script>
 
