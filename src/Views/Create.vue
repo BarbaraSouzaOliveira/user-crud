@@ -1,21 +1,6 @@
 <template>
   <div>
-    <Navbar name="Criar usuários"/>
-      <v-alert
-          elevation="8"
-          outlined
-          text
-          type="success"
-          v-if="sucess"
-      >{{sucessMesage}}</v-alert>           
-      <v-alert
-        color="red"
-        elevation="8"
-        outlined
-        text
-        type="error"
-        v-if="fail"
-      >Algo deu errado! {{failMensage}}</v-alert>
+    <Navbar name="Criar usuários"/>     
     <div class="container-create">  
       <div style="width: 80vw; padding: 2rem;">
         <span>Selecione um avatar</span>
@@ -65,7 +50,24 @@
             @click="validate"
           >
             {{isEdit ? 'Editar usuários' : 'Criar usuários'}}
-          </v-btn>    
+          </v-btn>
+          <v-alert
+            style="margin-top: 0.5rem"
+            elevation="8"
+            outlined
+            text
+            type="success"
+            v-if="sucess"
+          >{{sucessMesage}}</v-alert>           
+          <v-alert
+            color="red"
+            style="margin-top: 0.5rem"
+            elevation="8"
+            outlined
+            text
+            type="error"
+            v-if="fail"
+          >Algo deu errado! {{failMensage}}</v-alert>    
         </v-form>      
       </div>
     </div> 
@@ -143,7 +145,7 @@ export default {
               },
               index:  this.$route.params.editIndex              
             })
-            setTimeout(()=>this.$router.push({ path: '/'}),1000)
+            setTimeout(()=>this.$router.push({ path: '/listar'}),1000)
           }else{
             this.sucess = true;
             this.sucessMesage = 'Usuario Criado com Sucesso'
