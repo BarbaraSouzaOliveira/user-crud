@@ -1,23 +1,13 @@
-# user-crud
+# user-crud Project
 
-## Project setup
+## Para inicializar o Projeto:
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Para rodar o Projeto: 
 ```
 npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
 
 ### Customize configuration
