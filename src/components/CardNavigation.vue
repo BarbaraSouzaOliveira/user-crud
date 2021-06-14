@@ -57,9 +57,14 @@ export default {
     padding: .3rem;
     cursor: pointer;
     text-decoration: none;
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-align: center;
+    font-size: 22px;
+    line-height: 20px;
 }
 .img-card-card {
     width: 90px;
     height: 80px;
+    margin-bottom: 10px;
 }
 </style>

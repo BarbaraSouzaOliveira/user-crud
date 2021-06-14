@@ -1,15 +1,15 @@
 <template>
     <div>
-        <Navbar name="CRUD de USUARIOS" />
+        <Navbar name="CRUD de usuários" />
         <div class="conteiner-home">  
             <CardNavigation 
-                name="Criar Usuarios"
+                name="Criar usuários"
                 route="/criar"
                 imgName="IconCreate.png"                
             />
             <CardNavigation 
-                name="Listar Usuarios"
-                route="/criar"
+                name="Listar usuários"
+                route="/listar"
                 imgName="IconList.png"                
             />           
         </div>       

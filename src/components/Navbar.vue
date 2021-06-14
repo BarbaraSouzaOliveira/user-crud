@@ -40,4 +40,8 @@ export default {
     padding: .2rem;
     display: flex;
 }
+.container-nav h3 {
+  font-size: 15px;
+  font-family: 'Oswald', sans-serif;
+}
 </style>
