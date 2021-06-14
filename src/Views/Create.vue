@@ -1,13 +1,21 @@
 <template>
   <div>
-    <Navbar name="Criar Usuarios"/>
-     <v-alert
-            elevation="8"
-            outlined
-            text
-            type="success"
-            v-if="sucess"
-        >Usuario Criado com Sucesso</v-alert>
+    <Navbar name="Criar usuários"/>
+      <v-alert
+          elevation="8"
+          outlined
+          text
+          type="success"
+          v-if="sucess"
+      >{{sucessMesage}}</v-alert>           
+      <v-alert
+        color="red"
+        elevation="8"
+        outlined
+        text
+        type="error"
+        v-if="fail"
+      >Algo deu errado! {{failMensage}}</v-alert>
     <div style="width: 80vw; padding: 2rem">
       <span>Selecione um avatar</span>
       <v-carousel 
@@ -21,9 +29,9 @@
             <v-flex xs2  :key="j" v-for="j in 5">
               <img
                 :src="getImgUrl(i, j)" 
-                v-bind:alt="j" 
+                :alt="j" 
                 class="create-img"
-                :style="[avatar === j+'-'+i ? {'background': '#FF9D00'} : {'background': 'white'}]"
+                :style="[avatar === i+'-'+j ? {'background': '#FF9D00'} : {'background': 'white'}]"
                 v-on:click="onClickImg(i, j)"
               />
             </v-flex>
@@ -48,6 +56,7 @@
       :rules="emailRules"
       label="E-mail"
       required
+      :disabled="isEdit"
     ></v-text-field>
 
     
@@ -57,18 +66,10 @@
       class="mr-4"
       @click="validate"
     >
-      Criar
+      {{isEdit ? 'Editar usuários' : 'Criar usuários'}}
     </v-btn>    
   </v-form>      
-    </div>    
-    <v-alert
-      color="red"
-      elevation="8"
-      outlined
-      text
-      type="error"
-      v-if="fail"
-    >Algo deu errado! {{failMensage}}</v-alert>
+    </div> 
   </div>
 </template>
 
@@ -96,35 +97,64 @@ export default {
         fail: false,
         failMensage: '',
         sucess: false,
+        sucessMesage: '',
+        isEdit: false,
       }
+  },
+  mounted (){
+    let  index = this.$route.params.editIndex;
+    console.log(index)    
+    if(index>=0){
+      this.isEdit = true;
+      let users = this.$store.getters.getUser
+      console.log(users[index])
+      this.avatar = users[index].avatar;
+      this.email = users[index].email;
+      this.name = users[index].name;
+    }
   },
   methods: {
     getImgUrl(i,j) {
         return require('../assets/img/avatar/Ativo'+i+'-'+j+'.png');
     },
     onClickImg (i,j){
-        console.log("pao",i,j)
-        this.avatar = j+'-'+i;
+        this.avatar = i+'-'+j;
     },
     toggleFail(){
       this.fail = !this.fail;
     },
     validate () {
       if(this.$refs.form.validate() && this.avatar !== 0){
-       
+        console.log(this.avatar)
         let users = this.$store.getters.getUser
-        if(users.findIndex(e=> e.email === this.email)!== -1){
+        if(!this.isEdit && users.findIndex(e=> e.email === this.email)!== -1){
           this.fail = true;
           this.failMensage = 'Email ja cadastrado'
           setTimeout(this.toggleFail,2000);
         }else{
-           this.sucess = true;
-          this.$store.commit('addUsers', {
-            name: this.name,
-            avatar: this.avatar,
-            email: this.email,
-          })
-          setTimeout(()=>this.$router.push({ path: '/'}),2000)
+          if(this.isEdit){
+            console.log("aquiiusiaz")
+            this.sucess = true;
+            this.sucessMesage = 'Usuario Editado com Sucesso'
+            this.$store.commit('editUserByIndex',{
+              user: {
+                name: this.name,
+                avatar: this.avatar,
+                email: this.email,
+              },
+              index:  this.$route.params.editIndex              
+            })
+            setTimeout(()=>this.$router.push({ path: '/'}),2000)
+          }else{
+            this.sucess = true;
+            this.sucessMesage = 'Usuario Criado com Sucesso'
+            this.$store.commit('addUsers', {
+              name: this.name,
+              avatar: this.avatar,
+              email: this.email,
+            })
+            setTimeout(()=>this.$router.push({ path: '/'}),2000)
+          }
         }        
       }else{
         this.fail = true;
