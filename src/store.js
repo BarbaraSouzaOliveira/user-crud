@@ -8,12 +8,20 @@ export const store = new Vuex.Store({
   getters: {
     getUser: state => {
       return state.users
-    }
+    },
   },
   mutations: {
     addUsers(state, user) {
       state.users.push(user);
-      console.log(state.users)
-    }
+      console.log(state.users);
+    },
+    removeUserByIndex(state,index){
+      state.users.splice(index, 1);
+      console.log(state.users);
+    },
+    editUserByIndex(state,user){
+      state.users[user.index] = user.user;
+      console.log(state.users);
+    },
   },
 })
