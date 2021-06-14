@@ -16,59 +16,58 @@
         type="error"
         v-if="fail"
       >Algo deu errado! {{failMensage}}</v-alert>
-    <div style="width: 80vw; padding: 2rem">
-      <span>Selecione um avatar</span>
-      <v-carousel 
-        style="height: 180px;" 
-        hide-delimiters
-      >    
-        <v-carousel-item
-          v-for="i in 3" :key="i"     
+    <div class="container-create">  
+      <div style="width: 80vw; padding: 2rem;">
+        <span>Selecione um avatar</span>
+        <v-carousel 
+          style="height: 180px;" 
+          hide-delimiters
+        >    
+          <v-carousel-item
+            v-for="i in 3" :key="i"     
+          >
+            <v-layout row style="padding: 2rem;justify-content: space-around;" >
+              <v-flex xs2  :key="j" v-for="j in 5">
+                <img
+                  :src="getImgUrl(i, j)" 
+                  :alt="j" 
+                  class="create-img"
+                  :style="[avatar === i+'-'+j ? {'background': '#FF9D00'} : {'background': 'white'}]"
+                  v-on:click="onClickImg(i, j)"
+                />
+              </v-flex>
+            </v-layout>    
+          </v-carousel-item>
+        </v-carousel>
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
         >
-          <v-layout row style="padding: 2rem;justify-content: space-around;" >
-            <v-flex xs2  :key="j" v-for="j in 5">
-              <img
-                :src="getImgUrl(i, j)" 
-                :alt="j" 
-                class="create-img"
-                :style="[avatar === i+'-'+j ? {'background': '#FF9D00'} : {'background': 'white'}]"
-                v-on:click="onClickImg(i, j)"
-              />
-            </v-flex>
-          </v-layout>    
-        </v-carousel-item>
-      </v-carousel>
-      <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
-    <v-text-field
-      v-model="name"
-      :counter="30"
-      :rules="nameRules"
-      label="Name"
-      required
-    ></v-text-field>
-
-    <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="E-mail"
-      required
-      :disabled="isEdit"
-    ></v-text-field>
-
-    
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      class="mr-4"
-      @click="validate"
-    >
-      {{isEdit ? 'Editar usuários' : 'Criar usuários'}}
-    </v-btn>    
-  </v-form>      
+          <v-text-field
+            v-model="name"
+            :counter="30"
+            :rules="nameRules"
+            label="Name"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="email"
+            :rules="emailRules"
+            label="E-mail"
+            required
+            :disabled="isEdit"
+          ></v-text-field>      
+          <v-btn
+            :disabled="!valid"
+            color="#FF9D00"
+            class="mr-4"
+            @click="validate"
+          >
+            {{isEdit ? 'Editar usuários' : 'Criar usuários'}}
+          </v-btn>    
+        </v-form>      
+      </div>
     </div> 
   </div>
 </template>
@@ -144,7 +143,7 @@ export default {
               },
               index:  this.$route.params.editIndex              
             })
-            setTimeout(()=>this.$router.push({ path: '/'}),2000)
+            setTimeout(()=>this.$router.push({ path: '/'}),1000)
           }else{
             this.sucess = true;
             this.sucessMesage = 'Usuario Criado com Sucesso'
@@ -153,7 +152,7 @@ export default {
               avatar: this.avatar,
               email: this.email,
             })
-            setTimeout(()=>this.$router.push({ path: '/'}),2000)
+            setTimeout(()=>this.$router.push({ path: '/'}),1000)
           }
         }        
       }else{
@@ -173,5 +172,14 @@ export default {
     height: 50px; 
     cursor: pointer;
     border-radius: 50px;
+}
+.container-create {
+  margin: 2rem;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  border-radius: 10px 10px 10px 10px;
+  border: 1px solid rgb(187, 187, 187);
+  box-shadow: -1px 8px 14px -9px rgba(92,92,92,0.75);
 }
 </style>
